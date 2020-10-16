@@ -6,11 +6,37 @@ A sample to showcase how to create a k8s scheduler extender.
 
 Switch go module, and wire dependencies to k8s.io/*:v0.18.3.
 
-For a fresh cloned repo, run `go mod vendor` and `go build -o main *.go` to compile the main binary.
+For a fresh cloned repo, run `go mod vendor` and `GOOS=linux GOARCH=amd64 go build -o sample-scheduler-extender *.go` to compile the main binary.
 
-## [TODO] Running with a Kubeadm env
+## Running with a Kubernetes 
 
+```
+kubectl create configmap scheduler-extender --from-file=./scheduler-extender-config.yaml  --from-file=./scheduler-extender-policy.json
 
+```
+
+```
+volumes:
+- name: scheduler-extender-config
+  configMap:
+    name: scheduler-extender
+```
+
+```
+volumeMounts:
+- name: scheduler-extender-config
+  mountPath: /etc/kubernetes/scheduler-extender-config
+```
+
+```
+--config=/etc/kubernetes/scheduler-extender-config/scheduler-extender-config.yaml
+```
+
+```
+- name: sample-scheduler-extender
+  image: registry.cn-beijing.aliyuncs.com/aliyun-asm/sample-scheduler-extender:v0.1
+  
+```
 ## [TODO] Running with a hack-local env (for dev)
 
 Make following changes on hack/local-up-cluster.sh

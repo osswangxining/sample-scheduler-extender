@@ -1,10 +1,10 @@
 apiVersion: kubescheduler.config.k8s.io/v1alpha1
 kind: KubeSchedulerConfiguration
 clientConnection:
-  kubeconfig: "/var/run/kubernetes/scheduler.kubeconfig"
+  kubeconfig: "/etc/kubernetes/config/scheduler.conf"
 algorithmSource:
   policy:
     file:
-      path: "/root/config/scheduler-extender-policy.json"
+      path: "/etc/kubernetes/scheduler-extender-config/scheduler-extender-policy.json"
       # YAML not supported yet
       # https://github.com/kubernetes/kubernetes/issues/75852

@@ -1,0 +1,20 @@
+containers:
+  - image: registry.cn-beijing.aliyuncs.com/aliyun-asm/sample-scheduler-extender:v0.1
+    imagePullPolicy: IfNotPresent
+    name: sample-scheduler-extender
+    ports:
+      - containerPort: 8888
+        name: http
+        protocol: TCP
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+  - command:
+      - kube-scheduler
+      - --leader-elect=true
+      - --profiling=false
+      - --authentication-kubeconfig=/etc/kubernetes/config/scheduler.conf
+      - --authorization-kubeconfig=/etc/kubernetes/config/scheduler.conf
+      - --kubeconfig=/etc/kubernetes/config/scheduler.conf
+      - --v=5
+      - --config=/etc/kubernetes/scheduler-extender-config/scheduler-extender-config.yaml
